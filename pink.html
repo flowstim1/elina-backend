@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELINA — Fine Jewelry</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--pink:#E8B4B8;
+--pink2:#F5D6D8;
+--pink3:#D48C94;
+--white:#FFFFFF;
+--cream:#FFF9F5;
+--softblush:#FDF2F2;
+--dustyrose:#C9A9A9;
+--darktext:#5C4B4B;
+}
+html{scroll-behavior:smooth}
+body{background:var(--white);color:var(--darktext);font-family:'Jost',sans-serif;font-weight:300;overflow-x:hidden;cursor:none}
+.cursor{position:fixed;width:8px;height:8px;background:var(--pink);border-radius:50%;pointer-events:none;z-index:9999;transition:transform 0.15s ease}
+.cursor-ring{position:fixed;width:32px;height:32px;border:1px solid var(--pink);border-radius:50%;pointer-events:none;z-index:9998;transition:all 0.12s ease;transform:translate(-50%,-50%)}
+@media (max-width:768px){.cursor,.cursor-ring{display:none}}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:28px 60px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom,rgba(255,255,255,0.98),rgba(255,255,255,0.95));backdrop-filter:blur(10px);border-bottom:1px solid var(--pink2)}
+@media (max-width:768px){nav{padding:20px 5%}}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;letter-spacing:0.35em;color:var(--pink3);text-transform:uppercase}
+.nav-links{display:flex;gap:44px}
+@media (max-width:768px){.nav-links{display:none}}
+.nav-links a{font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--darktext);text-decoration:none;transition:color 0.3s}
+.nav-links a:hover{color:var(--pink)}
+.nav-cart{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--darktext);cursor:pointer;display:flex;align-items:center;gap:8px}
+.nav-cart span{background:var(--pink);color:white;border-radius:50%;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-size:10px}
+#hero{height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(135deg, #FFF5F5 0%, #FFF0F0 50%, #FFE8E8 100%)}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 60% 40%,rgba(232,180,184,0.15) 0%,transparent 60%),radial-gradient(ellipse 40% 60% at 20% 80%,rgba(232,180,184,0.08) 0%,transparent 50%)}
+.hero-lines{position:absolute;inset:0;overflow:hidden;opacity:0.2}
+.hero-lines::before{content:'';position:absolute;top:-50%;left:30%;width:1px;height:200%;background:linear-gradient(to bottom,transparent,var(--pink),transparent);transform:rotate(15deg);animation:shimmer 8s ease-in-out infinite}
+.hero-lines::after{content:'';position:absolute;top:-50%;left:70%;width:1px;height:200%;background:linear-gradient(to bottom,transparent,var(--pink),transparent);transform:rotate(-8deg);animation:shimmer 10s ease-in-out 2s infinite}
+@keyframes shimmer{0%,100%{opacity:0.2}50%{opacity:0.8}}
+
+/* BUTTERFLIES */
+.butterfly-left{position:absolute;left:-30px;top:50%;transform:translateY(-50%);width:180px;height:180px;pointer-events:none;z-index:5;animation:floatLeft 8s ease-in-out infinite}
+.butterfly-right{position:absolute;right:-30px;top:50%;transform:translateY(-50%);width:180px;height:180px;pointer-events:none;z-index:5;animation:floatRight 8s ease-in-out infinite}
+.butterfly-left svg,.butterfly-right svg{width:100%;height:100%;opacity:0.85;filter:drop-shadow(0 0 3px rgba(232,180,184,0.3))}
+@keyframes floatLeft{
+  0%,100%{transform:translateY(-50%) rotate(-3deg) scale(1);}
+  25%{transform:translateY(-52%) rotate(-1deg) scale(1.02);}
+  50%{transform:translateY(-58%) rotate(2deg) scale(1.05);}
+  75%{transform:translateY(-52%) rotate(4deg) scale(1.03);}
+}
+@keyframes floatRight{
+  0%,100%{transform:translateY(-50%) rotate(3deg) scale(1);}
+  25%{transform:translateY(-48%) rotate(1deg) scale(1.02);}
+  50%{transform:translateY(-42%) rotate(-2deg) scale(1.05);}
+  75%{transform:translateY(-48%) rotate(-4deg) scale(1.03);}
+}
+.butterfly-left svg .wing-left,
+.butterfly-right svg .wing-right{
+  animation:fluttering 3s ease-in-out infinite;
+  transform-origin:center;
+}
+.butterfly-left svg .wing-right,
+.butterfly-right svg .wing-left{
+  animation:fluttering 3s ease-in-out 0.5s infinite;
+  transform-origin:center;
+}
+@keyframes fluttering{
+  0%,100%{transform:scaleX(1);}
+  50%{transform:scaleX(0.88);}
+}
+@media (max-width:768px){
+  .butterfly-left{width:110px;height:110px;left:-25px}
+  .butterfly-right{width:110px;height:110px;right:-25px}
+}
+
+/* WHATSAPP BUTTERFLY */
+.whatsapp-butterfly{
+  position:fixed;
+  bottom:30px;
+  left:30px;
+  width:60px;
+  height:60px;
+  cursor:pointer;
+  z-index:1000;
+  animation:bounce 2s ease-in-out infinite;
+  filter:drop-shadow(0 4px 10px rgba(0,0,0,0.15));
+}
+.whatsapp-butterfly:hover{transform:scale(1.1);transition:transform 0.3s}
+@keyframes bounce{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-8px);}
+}
+.whatsapp-popup{
+  position:fixed;
+  bottom:100px;
+  left:30px;
+  background:var(--white);
+  padding:15px 25px;
+  border-radius:30px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.1);
+  z-index:1000;
+  display:none;
+  align-items:center;
+  gap:12px;
+  border:1px solid var(--pink2);
+  animation:popupFade 0.3s ease-out;
+}
+.whatsapp-popup.show{display:flex}
+@keyframes popupFade{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.whatsapp-popup a{
+  background:#25D366;
+  color:white;
+  text-decoration:none;
+  padding:8px 18px;
+  border-radius:50px;
+  font-size:13px;
+  letter-spacing:0.1em;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.whatsapp-popup .close-popup{
+  background:none;
+  border:none;
+  font-size:18px;
+  cursor:pointer;
+  color:var(--dustyrose);
+  padding:0 5px;
+}
+
+.hero-content{text-align:center;position:relative;z-index:10;animation:heroReveal 1.8s cubic-bezier(0.16,1,0.3,1) forwards;padding:0 5%}
+@keyframes heroReveal{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+.hero-eyebrow{font-size:10px;letter-spacing:0.5em;text-transform:uppercase;color:var(--pink);margin-bottom:32px;opacity:0;animation:fadeUp 1s ease 0.4s forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(80px,12vw,160px);font-weight:300;line-height:0.9;color:var(--darktext);letter-spacing:-0.01em}
+.hero-title em{font-style:italic;color:var(--pink);display:block}
+.hero-sub{font-size:12px;letter-spacing:0.3em;text-transform:uppercase;color:var(--dustyrose);margin-top:40px;opacity:0;animation:fadeUp 1s ease 0.8s forwards}
+.hero-cta{margin-top:56px;opacity:0;animation:fadeUp 1s ease 1.1s forwards;display:flex;gap:24px;justify-content:center;flex-wrap:wrap}
+.btn-primary{padding:16px 48px;border:1px solid var(--pink);color:var(--pink);font-size:10px;letter-spacing:0.35em;text-transform:uppercase;background:transparent;transition:all 0.4s;border-radius:50px;cursor:pointer}
+.btn-primary:hover{background:var(--pink);color:var(--white)}
+.btn-ghost{font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--dustyrose);background:none;border:none;display:flex;align-items:center;gap:12px;cursor:pointer}
+.btn-ghost::after{content:'';display:block;width:30px;height:1px;background:var(--dustyrose);transition:all 0.3s}
+.btn-ghost:hover{color:var(--pink)}
+.btn-ghost:hover::after{background:var(--pink);width:50px}
+.hero-scroll{position:absolute;bottom:48px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:12px;opacity:0;animation:fadeUp 1s ease 1.6s forwards}
+.scroll-line{width:1px;height:60px;background:linear-gradient(to bottom,var(--pink),transparent);animation:scrollPulse 2s ease-in-out infinite}
+@keyframes scrollPulse{0%,100%{opacity:0.3;transform:scaleY(0.8)}50%{opacity:1;transform:scaleY(1)}}
+.scroll-text{font-size:9px;letter-spacing:0.4em;text-transform:uppercase;color:var(--dustyrose)}
+
+/* Cart Sidebar */
+.cart-sidebar{position:fixed;top:0;right:-400px;width:380px;height:100%;background:var(--white);z-index:1000;transition:right 0.4s ease;box-shadow:-5px 0 30px rgba(0,0,0,0.1);display:flex;flex-direction:column;border-left:1px solid var(--pink2)}
+@media (max-width:480px){.cart-sidebar{width:100%;right:-100%}}
+.cart-sidebar.open{right:0}
+.cart-header{padding:25px;border-bottom:1px solid var(--pink2);display:flex;justify-content:space-between;align-items:center}
+.cart-header h3{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300}
+.cart-close{background:none;border:none;font-size:24px;cursor:pointer;color:var(--dustyrose)}
+.cart-items{flex:1;overflow-y:auto;padding:20px}
+.cart-item{display:flex;gap:15px;padding:15px 0;border-bottom:1px solid var(--pink2)}
+.cart-item-img{width:60px;height:60px;background:var(--softblush);border-radius:10px;overflow:hidden}
+.cart-item-img img{width:100%;height:100%;object-fit:cover}
+.cart-item-details{flex:1}
+.cart-item-name{font-family:'Cormorant Garamond',serif;font-size:16px}
+.cart-item-price{color:var(--pink);font-size:14px}
+.cart-item-remove{background:none;border:none;color:var(--dustyrose);cursor:pointer;font-size:12px}
+.cart-footer{padding:25px;border-top:1px solid var(--pink2)}
+.cart-total{display:flex;justify-content:space-between;margin-bottom:20px;font-size:16px}
+.cart-total span:last-child{color:var(--pink);font-size:20px;font-family:'Cormorant Garamond',serif}
+.checkout-btn{width:100%;padding:15px;background:var(--pink);border:none;color:white;border-radius:50px;cursor:pointer;font-size:12px;letter-spacing:0.2em}
+.empty-cart{text-align:center;padding:40px;color:var(--dustyrose)}
+
+.marquee-section{padding:24px 0;border-top:1px solid var(--pink2);border-bottom:1px solid var(--pink2);overflow:hidden;background:var(--cream)}
+.marquee-track{display:flex;gap:0;animation:marquee 30s linear infinite;width:max-content}
+.marquee-item{font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:0.4em;text-transform:uppercase;color:var(--dustyrose);padding:0 48px;white-space:nowrap}
+.marquee-dot{width:4px;height:4px;background:var(--pink);border-radius:50%;flex-shrink:0;align-self:center;margin:0 8px;display:inline-block}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.section{padding:120px 80px;background:var(--white)}
+@media (max-width:768px){.section{padding:60px 5%}}
+.section-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:80px;flex-wrap:wrap;gap:20px}
+.section-label{font-size:9px;letter-spacing:0.5em;text-transform:uppercase;color:var(--pink);margin-bottom:20px}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(42px,5vw,68px);font-weight:300;line-height:1.05;color:var(--darktext)}
+.section-title em{font-style:italic;color:var(--pink)}
+.section-link{font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--dustyrose);background:none;border:none;display:flex;align-items:center;gap:12px;cursor:pointer}
+.section-link::after{content:'';display:block;width:30px;height:1px;background:var(--dustyrose);transition:all 0.3s}
+.section-link:hover{color:var(--pink)}
+.section-link:hover::after{background:var(--pink);width:50px}
+.product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+@media (max-width:768px){.product-grid{grid-template-columns:repeat(2,1fr)}}
+.product-card{position:relative;overflow:hidden;cursor:pointer;background:var(--white)}
+.product-card:first-child{grid-row:span 2}
+@media (max-width:768px){.product-card:first-child{grid-row:span 1}}
+.product-image{width:100%;aspect-ratio:3/4;position:relative;overflow:hidden;background:var(--softblush)}
+.product-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;background:linear-gradient(135deg,var(--softblush) 0%,rgba(232,180,184,0.1) 50%,var(--softblush) 100%);transition:transform 0.6s cubic-bezier(0.16,1,0.3,1)}
+.product-card:hover .product-placeholder{transform:scale(1.04)}
+.product-placeholder img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.product-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(255,245,245,0.95) 0%,rgba(232,180,184,0.7) 40%,transparent 70%);opacity:0;transition:opacity 0.4s;display:flex;align-items:flex-end;padding:32px}
+.product-card:hover .product-overlay{opacity:1}
+.product-info{padding:20px 0 0}
+.product-name{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:var(--darktext);margin-bottom:6px}
+.product-meta{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.product-material{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dustyrose)}
+.product-price{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--pink);font-weight:400}
+.add-to-cart-btn{background:var(--pink);color:white;border:none;padding:8px 16px;border-radius:30px;font-size:10px;letter-spacing:0.2em;cursor:pointer;margin-top:10px;width:100%}
+.add-to-cart-btn:hover{background:var(--pink3)}
+.story-section{padding:160px 80px;display:grid;grid-template-columns:1fr 1fr;gap:120px;align-items:center;background:var(--cream)}
+@media (max-width:992px){.story-section{padding:60px 5%;grid-template-columns:1fr;gap:60px}}
+.story-visual{position:relative}
+.story-frame{width:100%;aspect-ratio:3/4;background:linear-gradient(160deg,rgba(232,180,184,0.12) 0%,rgba(232,180,184,0.03) 100%);border:1px solid var(--pink2);display:flex;align-items:center;justify-content:center;position:relative;border-radius:20px;overflow:hidden}
+.story-frame::before{content:'ELINA';font-family:'Cormorant Garamond',serif;font-size:120px;font-weight:300;color:rgba(232,180,184,0.1);position:absolute;letter-spacing:0.1em}
+.story-ornament{width:60%;height:60%;border:1px solid var(--pink2);position:absolute;animation:rotate 20s linear infinite}
+@keyframes rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.story-diamond{width:80px;height:80px;border:1px solid var(--pink);transform:rotate(45deg);position:relative;z-index:1}
+.story-diamond::after{content:'';position:absolute;inset:12px;border:1px solid var(--pink2)}
+.story-number{position:absolute;top:32px;left:32px;font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:0.3em;color:var(--pink);text-transform:uppercase}
+.story-text .label{font-size:9px;letter-spacing:0.5em;text-transform:uppercase;color:var(--pink);margin-bottom:24px}
+.story-text h2{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4vw,52px);font-weight:300;line-height:1.1;color:var(--darktext);margin-bottom:36px}
+.story-text h2 em{font-style:italic;color:var(--pink)}
+.story-text p{font-size:14px;line-height:2;color:var(--dustyrose);margin-bottom:24px}
+.story-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:56px;padding-top:56px;border-top:1px solid var(--pink2)}
+.stat-value{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;color:var(--pink);line-height:1}
+.stat-label{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dustyrose);margin-top:8px}
+.featured-section{padding:160px 80px;text-align:center;position:relative;overflow:hidden;background:var(--cream)}
+@media (max-width:768px){.featured-section{padding:60px 5%}}
+.featured-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(232,180,184,0.1) 0%,transparent 70%)}
+.featured-tag{font-size:9px;letter-spacing:0.6em;text-transform:uppercase;color:var(--pink);display:inline-block;margin-bottom:32px}
+.featured-title{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,7vw,96px);font-weight:300;color:var(--darktext);line-height:0.95;margin-bottom:16px}
+.featured-title em{font-style:italic;color:transparent;-webkit-text-stroke:1px var(--pink)}
+.featured-desc{font-size:14px;color:var(--dustyrose);max-width:440px;margin:32px auto;line-height:2}
+.featured-showcase{width:360px;height:360px;margin:60px auto;position:relative}
+@media (max-width:768px){.featured-showcase{width:280px;height:280px}}
+.ring-visual{width:100%;height:100%;position:relative}
+.ring-outer{position:absolute;inset:0;border:1px solid var(--pink2);border-radius:50%;animation:pulsering 4s ease-in-out infinite}
+.ring-middle{position:absolute;inset:20px;border:1px solid var(--pink);border-radius:50%;animation:pulsering 4s ease-in-out 0.5s infinite}
+.ring-inner{position:absolute;inset:60px;border:2px solid var(--pink3);border-radius:50%;animation:pulsering 4s ease-in-out 1s infinite}
+.ring-core{position:absolute;inset:110px;background:radial-gradient(circle,var(--pink2),rgba(232,180,184,0.2));border-radius:50%;animation:pulseglow 3s ease-in-out infinite}
+.ring-sparkle{position:absolute;width:4px;height:4px;background:var(--pink3);border-radius:50%;animation:sparkle 3s ease-in-out infinite}
+.ring-sparkle:nth-child(1){top:10px;left:50%;animation-delay:0s}
+.ring-sparkle:nth-child(2){top:50%;right:10px;animation-delay:0.8s}
+.ring-sparkle:nth-child(3){bottom:10px;left:50%;animation-delay:1.6s}
+.ring-sparkle:nth-child(4){top:50%;left:10px;animation-delay:2.4s}
+@keyframes pulsering{0%,100%{opacity:0.4;transform:scale(1)}50%{opacity:1;transform:scale(1.02)}}
+@keyframes pulseglow{0%,100%{opacity:0.6}50%{opacity:1}}
+@keyframes sparkle{0%,100%{opacity:0;transform:scale(0)}30%,70%{opacity:1;transform:scale(1)}}
+footer{background:var(--cream);padding:80px;border-top:1px solid var(--pink2)}
+@media (max-width:768px){footer{padding:40px 5%}}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:60px}
+@media (max-width:992px){.footer-grid{grid-template-columns:1fr;gap:40px}}
+.footer-brand{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:var(--pink);letter-spacing:0.2em;margin-bottom:20px}
+.footer-tagline{font-size:12px;color:var(--dustyrose);line-height:2;max-width:280px}
+.footer-heading{font-size:9px;letter-spacing:0.5em;text-transform:uppercase;color:var(--pink);margin-bottom:24px}
+.footer-links{display:flex;flex-direction:column;gap:14px}
+.footer-links a{font-size:13px;color:var(--dustyrose);text-decoration:none;transition:color 0.3s}
+.footer-links a:hover{color:var(--pink)}
+.footer-bottom{padding-top:40px;border-top:1px solid var(--pink2);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
+.footer-copy{font-size:11px;color:var(--dustyrose);letter-spacing:0.1em}
+.footer-legal{display:flex;gap:32px}
+.footer-legal a{font-size:11px;color:var(--dustyrose);text-decoration:none}
+.footer-legal a:hover{color:var(--pink)}
+#owner-trigger{position:fixed;bottom:0;right:0;width:50px;height:50px;background:transparent;border:none;cursor:pointer;z-index:200}
+#owner-panel{position:fixed;top:0;left:0;right:0;bottom:0;z-index:500;display:none;background:rgba(255,245,245,0.98);overflow:auto}
+#owner-panel.open{display:block}
+.panel-header{padding:32px 60px;border-bottom:1px solid var(--pink2);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;background:var(--white)}
+@media (max-width:768px){.panel-header{padding:20px}}
+.panel-logo{font-family:'Cormorant Garamond',serif;font-size:22px;letter-spacing:0.3em;color:var(--pink);text-transform:uppercase}
+.panel-subtitle{font-size:11px;letter-spacing:0.2em;color:var(--dustyrose);margin-top:4px}
+.panel-close{background:none;border:1px solid var(--pink2);color:var(--pink);padding:12px 28px;font-size:10px;letter-spacing:0.3em;text-transform:uppercase;cursor:pointer;border-radius:50px}
+.panel-body{padding:60px;display:grid;grid-template-columns:1fr 1fr;gap:60px}
+@media (max-width:900px){.panel-body{padding:30px;grid-template-columns:1fr;gap:40px}}
+.panel-form{display:flex;flex-direction:column;gap:28px}
+.form-group{display:flex;flex-direction:column;gap:10px}
+.form-label{font-size:10px;letter-spacing:0.35em;text-transform:uppercase;color:var(--pink)}
+.form-input,.form-textarea,.form-select{background:var(--softblush);border:1px solid var(--pink2);color:var(--darktext);padding:14px 20px;font-family:'Jost',sans-serif;font-size:13px;font-weight:300;outline:none;border-radius:10px}
+.form-input:focus,.form-textarea:focus,.form-select:focus{border-color:var(--pink)}
+.upload-zone{border:2px dashed var(--pink2);padding:48px;display:flex;flex-direction:column;align-items:center;gap:16px;cursor:pointer;transition:all 0.3s;position:relative;border-radius:15px;background:var(--softblush)}
+.upload-zone:hover{border-color:var(--pink);background:rgba(232,180,184,0.05)}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.upload-icon{font-size:32px;color:var(--pink);opacity:0.6}
+.upload-text{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dustyrose)}
+.preview-grid{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+.preview-thumb{width:60px;height:60px;background:var(--softblush);border:1px solid var(--pink2);border-radius:10px;overflow:hidden}
+.preview-thumb img{width:100%;height:100%;object-fit:cover}
+.btn-publish{padding:18px 48px;background:var(--pink);border:none;color:var(--white);font-size:10px;letter-spacing:0.4em;text-transform:uppercase;cursor:pointer;border-radius:50px;transition:all 0.3s}
+.btn-publish:hover{background:var(--pink3)}
+.live-products{padding-left:60px;border-left:1px solid var(--pink2)}
+@media (max-width:900px){.live-products{padding-left:0;border-left:none;margin-top:20px}}
+.live-title{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--darktext);margin-bottom:8px;font-weight:300}
+.live-sub{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dustyrose);margin-bottom:32px}
+.live-grid{display:flex;flex-direction:column;gap:16px;max-height:600px;overflow-y:auto}
+.live-item{display:flex;gap:16px;padding:20px;border:1px solid var(--pink2);background:var(--softblush);border-radius:12px;position:relative}
+.live-thumb{width:72px;height:72px;background:var(--white);border:1px solid var(--pink2);border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.live-thumb img{width:100%;height:100%;object-fit:cover}
+.live-details{flex:1}
+.live-name{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--darktext);margin-bottom:4px}
+.live-mat{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dustyrose);margin-bottom:8px}
+.live-price{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--pink)}
+.live-delete{position:absolute;top:12px;right:12px;background:none;border:none;color:var(--dustyrose);cursor:pointer;font-size:18px}
+.live-edit{position:absolute;top:12px;right:50px;background:none;border:none;color:var(--pink);cursor:pointer;font-size:16px}
+.empty-state{text-align:center;padding:60px 0;color:var(--dustyrose)}
+.toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--pink);color:var(--white);padding:14px 32px;font-size:10px;letter-spacing:0.35em;text-transform:uppercase;z-index:9999;opacity:0;transition:all 0.4s;border-radius:50px;white-space:nowrap}
+@media (max-width:600px){.toast{white-space:normal;text-align:center}}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;justify-content:center;align-items:center}
+.modal-content{background:var(--white);max-width:450px;width:90%;border-radius:20px;padding:30px;position:relative;border:1px solid var(--pink2)}
+.modal-close{position:absolute;top:15px;right:20px;font-size:28px;cursor:pointer;color:var(--pink);background:none;border:none}
+.modal-img{width:100%;border-radius:15px;margin-bottom:20px}
+.cod-note{background:var(--softblush);padding:15px;border-radius:10px;margin:20px 0;font-size:13px;color:var(--pink3);text-align:center}
+.order-btn{width:100%;padding:16px;background:var(--pink);border:none;color:var(--white);font-size:14px;letter-spacing:0.3em;text-transform:uppercase;cursor:pointer;border-radius:50px;margin-bottom:10px}
+.add-to-cart-modal{width:100%;padding:12px;background:white;border:1px solid var(--pink);color:var(--pink);border-radius:50px;cursor:pointer;font-size:12px;letter-spacing:0.2em}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.9s,transform 0.9s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <div class="nav-logo">ELINA</div>
+  <div class="nav-links">
+    <a href="#" onclick="scrollTo('collection')">Collections</a>
+    <a href="#" onclick="scrollTo('story')">Craftsmanship</a>
+    <a href="#" onclick="scrollTo('bespoke')">Bespoke</a>
+    <a href="#" onclick="scrollTo('heritage')">Heritage</a>
+  </div>
+  <div class="nav-cart" onclick="toggleCart()">🛒 CART <span id="cartCount">0</span></div>
+</nav>
+
+<!-- WHATSAPP BUTTERFLY -->
+<div class="whatsapp-butterfly" id="whatsappBtn">
+  <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="whatsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#E8B4B8"/>
+        <stop offset="100%" style="stop-color:#25D366"/>
+      </linearGradient>
+    </defs>
+    <path class="wing-left" d="M30 30 C22 18,8 15,5 22 C2 29,12 40,22 44 C28 46,26 38,30 30Z" fill="url(#whatsGrad)" opacity="0.9"/>
+    <path class="wing-right" d="M30 30 C38 18,52 15,55 22 C58 29,48 40,38 44 C32 46,34 38,30 30Z" fill="url(#whatsGrad)" opacity="0.9"/>
+    <path d="M30 30 C25 42,20 52,25 56 C30 60,35 58,32 52 C29 46,28 38,30 30Z" fill="#E8B4B8" opacity="0.7"/>
+    <ellipse cx="30" cy="30" rx="3" ry="10" fill="#5C4B4B" opacity="0.5"/>
+    <path d="M28 20 C26 16,23 14,22 15" stroke="#5C4B4B" stroke-width="1" fill="none" opacity="0.4"/>
+    <path d="M32 20 C34 16,37 14,38 15" stroke="#5C4B4B" stroke-width="1" fill="none" opacity="0.4"/>
+  </svg>
+</div>
+
+<div class="whatsapp-popup" id="whatsappPopup">
+  <span>💬 Contact me on WhatsApp</span>
+  <a href="https://wa.me/212606028459" target="_blank">Chat Now →</a>
+  <button class="close-popup" onclick="closeWhatsAppPopup()">✕</button>
+</div>
+
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  
+  <!-- BUTTERFLY LEFT -->
+  <div class="butterfly-left">
+    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="wingL1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#E8B4B8;stop-opacity:0.8"/>
+          <stop offset="100%" style="stop-color:#D48C94;stop-opacity:0.5"/>
+        </linearGradient>
+        <linearGradient id="wingL2" x1="100%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#F5D6D8;stop-opacity:0.7"/>
+          <stop offset="100%" style="stop-color:#E8B4B8;stop-opacity:0.4"/>
+        </linearGradient>
+      </defs>
+      <path class="wing-left" d="M95 95 C70 45,25 30,15 55 C5 80,30 115,55 125 C75 132,85 110,95 95Z" fill="url(#wingL1)"/>
+      <path class="wing-right" d="M105 95 C130 45,175 30,185 55 C195 80,170 115,145 125 C125 132,115 110,105 95Z" fill="url(#wingL2)"/>
+      <path d="M95 105 C80 135,65 170,75 185 C85 200,105 190,95 175 C90 160,95 135,95 105Z" fill="#F5D6D8" fill-opacity="0.6"/>
+      <path d="M105 105 C120 135,135 170,125 185 C115 200,95 190,105 175 C110 160,105 135,105 105Z" fill="#E8B4B8" fill-opacity="0.5"/>
+      <ellipse cx="100" cy="100" rx="3" ry="14" fill="#5C4B4B" fill-opacity="0.5"/>
+      <path d="M97 86 C92 75,85 70,82 72" stroke="#5C4B4B" stroke-width="1" fill="none" opacity="0.4"/>
+      <path d="M103 86 C108 75,115 70,118 72" stroke="#5C4B4B" stroke-width="1" fill="none" opacity="0.4"/>
+      <circle cx="65" cy="75" r="4" fill="#D48C94" opacity="0.5"/>
+      <circle cx="135" cy="75" r="4" fill="#D48C94" opacity="0.5"/>
+      <circle cx="55" cy="95" r="3" fill="#E8B4B8" opacity="0.4"/>
+      <circle cx="145" cy="95" r="3" fill="#E8B4B8" opacity="0.4"/>
+    </svg>
+  </div>
+  
+  <!-- BUTTERFLY RIGHT -->
+  <div class="butterfly-right">
+    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="wingR1" x1="100%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#D48C94;stop-opacity:0.8"/>
+          <stop offset="100%" style="stop-color:#E8B4B8;stop-opacity:0.5"/>
+        </linearGradient>
+        <linearGradient id="wingR2" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#F5D6D8;stop-opacity:0.7"/>
+          <stop offset="100%" style="stop-color:#C9A9A9;stop-opacity:0.4"/>
+        </linearGradient>
+      </defs>
+      <path class="wing-left" d="M95 95 C70 45,25 30,15 55 C5 80,30 115,55 125 C75 132,85 110,95 95Z" fill="url(#wingR1)"/>
+      <path class="wing-right" d="M105 95 C130 45,175 30,185 55 C195 80,170 115,145 125 C125 132,115 110,105 95Z" fill="url(#wingR2)"/>
+      <path d="M95 105 C80 135,65 170,75 185 C85 200,105 190,95 175 C90 160,95 135,95 105Z" fill="#E8B4B8" fill-opacity="0.6"/>
+      <path d="M105 105 C120 135,135 170,125 185 C115 200,95 190,105 175 C110 160,105 135,105 105Z" fill="#F5D6D8" fill-opacity="0.5"/>
+      <ellipse cx="100" cy="100" rx="3" ry="14" fill="#5C4B4B" fill-opacity="0.5"/>
+      <path d="M97 86 C92 75,85 70,82 72" stroke="#5C4B4B" stroke-width="1" fill="none" opacity="0.4"/>
+      <path d="M103 86 C108 75,115 70,118 72" stroke="#5C4B4B" stroke-width="1" fill="none" opacity="0.4"/>
+      <circle cx="65" cy="75" r="4" fill="#D48C94" opacity="0.5"/>
+      <circle cx="135" cy="75" r="4" fill="#D48C94" opacity="0.5"/>
+      <circle cx="55" cy="95" r="3" fill="#E8B4B8" opacity="0.4"/>
+      <circle cx="145" cy="95" r="3" fill="#E8B4B8" opacity="0.4"/>
+    </svg>
+  </div>
+  
+  <div class="hero-content">
+    <div class="hero-eyebrow">Fine Jewelry · Maison Elina · Est. 2020 · Morocco</div>
+    <h1 class="hero-title">Worn by<br><em>Grace</em></h1>
+    <div class="hero-sub">Handcrafted for the Modern Woman</div>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="scrollTo('collection')">Explore Collection</button>
+      <button class="btn-ghost" onclick="scrollTo('story')">Our Story</button>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span class="scroll-text">Scroll</span>
+  </div>
+</section>
+
+<!-- CART SIDEBAR -->
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h3>Your Selections</h3>
+    <button class="cart-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="empty-cart">✨ Your cart is empty ✨</div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span>Total</span>
+      <span id="cartTotal">€0</span>
+    </div>
+    <button class="checkout-btn" onclick="checkout()">Order — Cash on Delivery</button>
+  </div>
+</div>
+
+<div class="marquee-section">
+  <div class="marquee-track">
+    <span class="marquee-item">18K Rose Gold</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Natural Diamonds</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Rare Gemstones</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Handcrafted in Morocco</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Timeless Elegance</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Bespoke Creations</span><span class="marquee-dot"></span>
+    <span class="marquee-item">18K White Gold</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Rose Gold</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Platinum Collection</span><span class="marquee-dot"></span>
+  </div>
+</div>
+
+<section id="collection" class="section">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-label">New Collection 2025</div>
+      <h2 class="section-title">The <em>Blossom</em><br>Catalogue</h2>
+    </div>
+    <button class="section-link" onclick="scrollTo('collection')">View All Pieces</button>
+  </div>
+  <div class="product-grid reveal" id="productGrid"></div>
+</section>
+
+<section id="story" class="story-section reveal">
+  <div class="story-visual">
+    <div class="story-frame">
+      <div class="story-ornament"></div>
+      <div class="story-diamond"></div>
+      <div class="story-number">Craftsmanship · No. I</div>
+    </div>
+  </div>
+  <div class="story-text">
+    <div class="label">The Maison</div>
+    <h2>Jewelry that tells<br>your <em>story</em></h2>
+    <p>Every ELINA piece begins as a whisper — an emotion, a memory, a dream. Our Moroccan artisans translate these invisible threads into wearable sculpture, each one singular and alive.</p>
+    <p>We work exclusively with ethically sourced diamonds, conflict-free gemstones, and recycled precious metals. Because beauty, to us, carries a conscience.</p>
+    <div class="story-stats">
+      <div><div class="stat-value">18K</div><div class="stat-label">Pure Gold</div></div>
+      <div><div class="stat-value">200+</div><div class="stat-label">Pieces Created</div></div>
+      <div><div class="stat-value">5 yr</div><div class="stat-label">Heritage</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="bespoke" class="featured-section reveal">
+  <div class="featured-bg"></div>
+  <div class="featured-tag">✦ Signature Piece ✦</div>
+  <h2 class="featured-title">The<br><em>Étoile</em><br>Ring</h2>
+  <p class="featured-desc">A 2.4 carat oval diamond set in an 18K rose gold pavé band. The crown jewel of our Blossom collection — made for the woman who moves worlds.</p>
+  <div class="featured-showcase">
+    <div class="ring-visual">
+      <div class="ring-outer"></div>
+      <div class="ring-middle"></div>
+      <div class="ring-inner"></div>
+      <div class="ring-core"></div>
+      <div class="ring-sparkle"></div>
+      <div class="ring-sparkle"></div>
+      <div class="ring-sparkle"></div>
+      <div class="ring-sparkle"></div>
+    </div>
+  </div>
+  <button class="btn-primary" style="margin:0 auto;display:block;background:var(--pink);color:white;border:none" onclick="openSignatureModal()">Enquire About This Piece</button>
+</section>
+
+<footer id="heritage">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">ELINA</div>
+      <p class="footer-tagline">Handcrafted fine jewelry for the modern woman. Born in Morocco. Worn by grace.</p>
+    </div>
+    <div>
+      <div class="footer-heading">Collections</div>
+      <div class="footer-links">
+        <a href="#">Rings</a>
+        <a href="#">Necklaces</a>
+        <a href="#">Earrings</a>
+        <a href="#">Bracelets</a>
+        <a href="#">Bespoke</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-heading">Maison</div>
+      <div class="footer-links">
+        <a href="#">Our Story</a>
+        <a href="#">Craftsmanship</a>
+        <a href="#">Ethical Sourcing</a>
+        <a href="#">Press</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-heading">Contact</div>
+      <div class="footer-links">
+        <a href="#">Atelier, Morocco</a>
+        <a href="#">hello@elina.com</a>
+        <a href="#">+212 606 028 459</a>
+        <a href="#">Book a Consultation</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Maison Elina. All rights reserved.</div>
+    <div class="footer-legal">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Cookies</a>
+    </div>
+  </div>
+</footer>
+
+<div id="productModal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <img id="modalImg" class="modal-img" src="">
+    <h2 id="modalTitle"></h2>
+    <div id="modalPrice" style="font-size:20px;color:var(--pink);margin:10px 0"></div>
+    <div id="modalMaterial" style="font-size:12px;color:var(--dustyrose)"></div>
+    <p id="modalDesc" style="margin:15px 0;line-height:1.6"></p>
+    <div class="cod-note">💎 Cash on Delivery — Pay when you receive</div>
+    <button class="order-btn" onclick="orderFromModal()">Order Now — Cash on Delivery</button>
+    <button class="add-to-cart-modal" onclick="addCurrentToCart()">Add to Cart</button>
+  </div>
+</div>
+
+<div class="toast" id="toast">✨ Product published successfully ✨</div>
+<button id="owner-trigger" aria-label="Admin"></button>
+
+<div id="owner-panel">
+  <div class="panel-header">
+    <div>
+      <div class="panel-logo">✦ Owner Studio</div>
+      <div class="panel-subtitle">Manage your ELINA collection</div>
+    </div>
+    <button class="panel-close" id="panelCloseBtn">Close Panel ✕</button>
+  </div>
+  <div class="panel-body">
+    <div class="panel-form">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--darktext);margin-bottom:8px">Add New Piece</h3>
+      <div class="form-group"><label class="form-label">Piece Name</label><input class="form-input" id="prodName" placeholder="e.g. Étoile Solitaire Ring"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div class="form-group"><label class="form-label">Price (€)</label><input class="form-input" id="prodPrice" placeholder="e.g. 4,200"></div>
+        <div class="form-group"><label class="form-label">Category</label><select class="form-select" id="prodCat"><option>Ring</option><option>Necklace</option><option>Earrings</option><option>Bracelet</option><option>Bespoke</option></select></div>
+      </div>
+      <div class="form-group"><label class="form-label">Material & Gemstone</label><input class="form-input" id="prodMat" placeholder="e.g. 18K Rose Gold · 1.2ct Diamond"></div>
+      <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="prodDesc" rows="3" placeholder="Describe the piece — its story, inspiration, and details..."></textarea></div>
+      <div class="form-group"><label class="form-label">Product Image</label><div class="upload-zone" id="uploadZone"><input type="file" id="prodImage" accept="image/*"><div class="upload-icon">✦</div><div class="upload-text">Click to upload image</div><div class="upload-sub">JPG, PNG · Max 5MB</div></div><div class="preview-grid" id="previewGrid"></div></div>
+      <button class="btn-publish" id="publishBtn">Publish to Collection ✦</button>
+    </div>
+    <div class="live-products">
+      <div class="live-title">Live Collection</div>
+      <div class="live-sub">Published Pieces</div>
+      <div class="live-grid" id="liveGrid"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ==================== API CONFIGURATION ====================
+const API_URL = 'https://7cc7d6cf2eb2a4.lhr.life/api';
+
+// ==================== CURSOR ====================
+const cursor=document.getElementById('cursor');
+const ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=(mx-4)+'px';cursor.style.top=(my-4)+'px';});
+function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
+animRing();
+document.querySelectorAll('button,a,.product-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='scale(2)';ring.style.transform='translate(-50%,-50%) scale(1.3)'});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='scale(1)';ring.style.transform='translate(-50%,-50%) scale(1)'});
+});
+
+// ==================== SCROLL REVEAL ====================
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+function scrollTo(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
+
+// ==================== WHATSAPP BUTTERFLY ====================
+let popupTimeout;
+document.getElementById('whatsappBtn').addEventListener('click', () => {
+  const popup = document.getElementById('whatsappPopup');
+  popup.classList.add('show');
+  clearTimeout(popupTimeout);
+  popupTimeout = setTimeout(() => { popup.classList.remove('show'); }, 5000);
+});
+function closeWhatsAppPopup(){ document.getElementById('whatsappPopup').classList.remove('show'); }
+setTimeout(() => { const popup = document.getElementById('whatsappPopup'); popup.classList.add('show'); setTimeout(() => popup.classList.remove('show'), 5000); }, 3000);
+
+// ==================== PRODUCTS (FROM AIVEN MYSQL) ====================
+let allProducts = [];
+let cart = [];
+
+// Load products from backend
+async function loadProducts() {
+    try {
+        const response = await fetch(`${API_URL}/products`);
+        allProducts = await response.json();
+        console.log('Products loaded from database:', allProducts);
+        renderProductGrid();
+        renderLiveGrid();
+        if (allProducts.length === 0) {
+            document.getElementById('productGrid').innerHTML = '<div style="text-align:center;padding:60px">✨ No products yet. Add your first piece in the admin panel! ✨</div>';
+        }
+    } catch (error) {
+        console.error('Error loading products:', error);
+        document.getElementById('productGrid').innerHTML = '<div style="text-align:center;padding:60px;color:red">❌ Cannot connect to backend. Make sure server is running on port 3001!</div>';
+        showToast('❌ Backend not running! Start with: node server.js');
+    }
+}
+
+// Add product to database
+async function addProductToDB(productData, imageFile) {
+    const formData = new FormData();
+    formData.append('name', productData.name);
+    formData.append('price', productData.price);
+    formData.append('material', productData.material || '');
+    formData.append('category', productData.category);
+    formData.append('description', productData.description || '');
+    if (imageFile) formData.append('image', imageFile);
+    
+    const response = await fetch(`${API_URL}/products`, { method: 'POST', body: formData });
+    return response.json();
+}
+
+// Delete product from database
+async function deleteProductFromDB(id) {
+    const response = await fetch(`${API_URL}/products/${id}`, { method: 'DELETE' });
+    return response.json();
+}
+
+// Render product grid
+function renderProductGrid() {
+    const grid = document.getElementById('productGrid');
+    if (!grid) return;
+    if (allProducts.length === 0) return;
+    
+    grid.innerHTML = allProducts.map(p => `
+        <div class="product-card" data-id="${p.id}">
+            <div class="product-image">
+                <div class="product-placeholder">
+                    ${p.image_url ? `<img src="http://localhost:3001${p.image_url}" alt="${p.name}">` : '<span style="font-size:48px;color:rgba(232,180,184,0.5)">✦</span>'}
+                </div>
+                <div class="product-overlay">
+                    <div style="display:flex;justify-content:space-between;align-items:flex-end;width:100%">
+                        <div>
+                            <div style="font-family:\'Cormorant Garamond\',serif;font-size:22px;color:var(--darktext);margin-bottom:6px">${escapeHtml(p.name)}</div>
+                            <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dustyrose)">${escapeHtml(p.material || p.category)}</div>
+                        </div>
+                        <div style="font-family:\'Cormorant Garamond\',serif;font-size:20px;color:var(--pink)">€${p.price}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="product-info">
+                <div class="product-name">${escapeHtml(p.name)}</div>
+                <div class="product-meta">
+                    <span class="product-material">${escapeHtml(p.material || p.category)}</span>
+                    <span class="product-price">€${p.price}</span>
+                </div>
+                <div style="display:flex;gap:10px;margin-top:10px">
+                    <button class="add-to-cart-btn" onclick="addToCart(${p.id})">Add to Cart</button>
+                    <button class="add-to-cart-btn" style="background:white;color:var(--pink);border:1px solid var(--pink)" onclick="openProductModal(${p.id})">View</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderLiveGrid() {
+    const grid = document.getElementById('liveGrid');
+    if (!grid) return;
+    
+    // Show all products in live grid (including default ones)
+    if (allProducts.length === 0) {
+        grid.innerHTML = '<div class="empty-state"><div class="empty-icon">✦</div><div class="empty-text">No pieces yet</div></div>';
+        return;
+    }
+    
+    grid.innerHTML = allProducts.map(p => `
+        <div class="live-item" id="live-${p.id}">
+            <div class="live-thumb">${p.image_url ? `<img src="http://localhost:3001${p.image_url}">` : '✦'}</div>
+            <div class="live-details">
+                <div class="live-name">${escapeHtml(p.name)}</div>
+                <div class="live-mat">${p.category}${p.material ? ' · '+p.material : ''}</div>
+                <div class="live-price">€${p.price}</div>
+            </div>
+            <button class="live-delete" onclick="deleteProduct(${p.id})" title="Delete">✕</button>
+        </div>
+    `).join('');
+}
+
+// Delete product
+async function deleteProduct(id) {
+    if (confirm('Remove this jewel from collection?')) {
+        await deleteProductFromDB(id);
+        await loadProducts();
+        showToast('Piece removed from collection');
+    }
+}
+
+// Add to cart
+function addToCart(productId) {
+    const product = allProducts.find(p => p.id === productId);
+    if (!product) return;
+    const existing = cart.find(item => item.id === product.id);
+    if (existing) { existing.quantity = (existing.quantity || 1) + 1; } 
+    else { cart.push({...product, quantity: 1}); }
+    saveCart();
+    showToast('✨ ' + product.name + ' added to cart');
+}
+
+function removeFromCart(productId) {
+    cart = cart.filter(item => item.id !== productId);
+    saveCart();
+    showToast('Item removed from cart');
+}
+
+function saveCart() {
+    localStorage.setItem('elina_cart', JSON.stringify(cart));
+    updateCartUI();
+}
+
+function loadCart() {
+    const saved = localStorage.getItem('elina_cart');
+    if (saved) { cart = JSON.parse(saved); }
+    updateCartUI();
+}
+
+function updateCartUI() {
+    const container = document.getElementById('cartItems');
+    const totalSpan = document.getElementById('cartTotal');
+    const countSpan = document.getElementById('cartCount');
+    if (!container) return;
+    if (cart.length === 0) {
+        container.innerHTML = '<div class="empty-cart">✨ Your cart is empty ✨</div>';
+        totalSpan.innerText = '€0';
+        countSpan.innerText = '0';
+        return;
+    }
+    let total = 0;
+    let itemCount = 0;
+    container.innerHTML = cart.map(item => {
+        const priceNum = parseInt(item.price.replace(/,/g, ''));
+        const itemTotal = priceNum * (item.quantity || 1);
+        total += itemTotal;
+        itemCount += (item.quantity || 1);
+        return `
+            <div class="cart-item">
+                <div class="cart-item-img">${item.image_url ? `<img src="http://localhost:3001${item.image_url}">` : '✦'}</div>
+                <div class="cart-item-details">
+                    <div class="cart-item-name">${escapeHtml(item.name)}</div>
+                    <div class="cart-item-price">€${item.price}</div>
+                    <div>Qty: ${item.quantity || 1}</div>
+                </div>
+                <button class="cart-item-remove" onclick="removeFromCart(${item.id})">Remove</button>
+            </div>
+        `;
+    }).join('');
+    totalSpan.innerText = '€' + total.toLocaleString();
+    countSpan.innerText = itemCount;
+}
+
+function toggleCart() { document.getElementById('cartSidebar').classList.toggle('open'); }
+
+function checkout() {
+    if (cart.length === 0) { alert('Your cart is empty. Add some pieces first!'); return; }
+    let orderSummary = cart.map(item => `${item.name} - €${item.price} x${item.quantity || 1}`).join('\n');
+    let total = cart.reduce((sum, item) => sum + (parseInt(item.price.replace(/,/g, '')) * (item.quantity || 1)), 0);
+    alert(`✨ ORDER PLACED ✨\n\n${orderSummary}\n\nTotal: €${total.toLocaleString()}\n\nPayment: Cash on Delivery\n\nYou will pay when you receive your package.\n\nThank you for shopping at ELINA!`);
+    cart = [];
+    saveCart();
+    toggleCart();
+    showToast('Order placed successfully!');
+}
+
+// Product modal
+let currentProductId = null;
+function openProductModal(productId) {
+    currentProductId = productId;
+    const product = allProducts.find(p => p.id === productId);
+    if (!product) return;
+    document.getElementById('modalImg').src = product.image_url ? `http://localhost:3001${product.image_url}` : 'https://placehold.co/400x400/F5D6D8/5C4B4B?text=ELINA';
+    document.getElementById('modalTitle').innerText = product.name;
+    document.getElementById('modalPrice').innerText = '€' + product.price;
+    document.getElementById('modalMaterial').innerHTML = product.material || product.category;
+    document.getElementById('modalDesc').innerText = product.description || 'Handcrafted with love in our Morocco atelier.';
+    document.getElementById('productModal').style.display = 'flex';
+}
+function openSignatureModal() { const sig = allProducts.find(p => p.id === 1); if(sig) openProductModal(1); }
+function closeModal() { document.getElementById('productModal').style.display = 'none'; currentProductId = null; }
+function orderFromModal() {
+    const product = allProducts.find(p => p.id === currentProductId);
+    if(product) alert(`✨ ORDER PLACED ✨\n\nPiece: ${product.name}\nAmount: €${product.price}\nPayment: Cash on Delivery`);
+    closeModal();
+}
+function addCurrentToCart() { if(currentProductId) { addToCart(currentProductId); closeModal(); } }
+
+function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m) { if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m; }); }
+function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
+
+// ==================== OWNER PANEL ====================
+let clickCount = 0, clickTimer = null;
+document.getElementById('owner-trigger').addEventListener('click', () => {
+    clickCount++; clearTimeout(clickTimer);
+    if(clickCount >= 3) { clickCount = 0; document.getElementById('owner-panel').classList.add('open'); }
+    else { clickTimer = setTimeout(() => { clickCount = 0; }, 800); }
+});
+let secretTyped = '';
+document.addEventListener('keydown', (e) => {
+    secretTyped += e.key.toLowerCase();
+    if(secretTyped.includes('elina')) { secretTyped = ''; document.getElementById('owner-panel').classList.add('open'); }
+    if(secretTyped.length > 10) secretTyped = secretTyped.slice(-10);
+});
+document.getElementById('panelCloseBtn').addEventListener('click', () => { document.getElementById('owner-panel').classList.remove('open'); });
+
+// Image upload
+let selectedImageFile = null;
+document.getElementById('prodImage').addEventListener('change', (e) => {
+    if(e.target.files && e.target.files[0]) {
+        selectedImageFile = e.target.files[0];
+        const preview = document.getElementById('previewGrid');
+        preview.innerHTML = '';
+        const div = document.createElement('div'); div.className = 'preview-thumb';
+        const img = document.createElement('img'); img.src = URL.createObjectURL(selectedImageFile);
+        div.appendChild(img); preview.appendChild(div);
+    }
+});
+
+// Publish product
+document.getElementById('publishBtn').addEventListener('click', async () => {
+    const name = document.getElementById('prodName').value.trim();
+    const price = document.getElementById('prodPrice').value.trim();
+    const material = document.getElementById('prodMat').value.trim();
+    const category = document.getElementById('prodCat').value;
+    const description = document.getElementById('prodDesc').value.trim();
+    if(!name || !price) { alert('Please enter product name and price'); return; }
+    const productData = { name, price, material, category, description };
+    try {
+        await addProductToDB(productData, selectedImageFile);
+        await loadProducts();
+        document.getElementById('prodName').value = '';
+        document.getElementById('prodPrice').value = '';
+        document.getElementById('prodMat').value = '';
+        document.getElementById('prodDesc').value = '';
+        document.getElementById('previewGrid').innerHTML = '';
+        selectedImageFile = null;
+        showToast('✨ ' + name + ' published to collection');
+    } catch(error) { showToast('❌ Failed to publish. Make sure backend is running!'); }
+});
+
+// Initialize
+loadCart();
+loadProducts();
+</script>
+</body>
+</html>https://7cc7d6cf2eb2a4.lhr.life
