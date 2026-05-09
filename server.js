@@ -24,7 +24,7 @@ const db = mysql.createConnection({
     host: 'mysql-354224c0-stimflow01-31a1.c.aivencloud.com',
     port: 14051,
     user: 'avnadmin',
-    password: 'AVNS_TcUvfA4xecb02szw7LZ',
+    password: process.env.DB_PASSWORD || 'AVNS_TcUvfA4xecb02szw7LZ',
     database: 'defaultdb',
     ssl: {
         rejectUnauthorized: false
