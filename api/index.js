@@ -6,51 +6,79 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const uri = process.env.MONGODB_URI;
-let db;
+// MongoDB Connection String - Will use environment variable from Vercel
+const MONGODB_URI = process.env.MONGODB_URI;
 
-async function connectDB() {
-    if (!db) {
-        const client = new MongoClient(uri);
-        await client.connect();
-        db = client.db('elina_jewelry');
-        console.log('✅ Connected to MongoDB');
+let cachedDb = null;
+
+async function connectToDatabase() {
+    if (cachedDb) {
+        return cachedDb;
     }
+    
+    const client = new MongoClient(MONGODB_URI);
+    await client.connect();
+    const db = client.db('elina_jewelry');
+    cachedDb = db;
     return db;
 }
 
+// GET all products
 app.get('/api/products', async (req, res) => {
     try {
-        const database = await connectDB();
-        const products = await database.collection('products').find({}).toArray();
+        const db = await connectToDatabase();
+        const products = await db.collection('products').find({}).toArray();
         res.json(products);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
     }
 });
 
+// POST - Add new product
 app.post('/api/products', async (req, res) => {
     try {
         const { name, price, material, category, description, image_url } = req.body;
-        const database = await connectDB();
-        const result = await database.collection('products').insertOne({
-            name, price, material, category, description, image_url,
-            created_at: new Date()
+        const db = await connectToDatabase();
+        const result = await db.collection('products').insertOne({
+            name,
+            price,
+            material: material || '',
+            category: category || '',
+            description: description || '',
+            image_url: image_url || '',
+            createdAt: new Date()
         });
         res.json({ success: true, id: result.insertedId });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
     }
 });
 
+// DELETE - Remove product
 app.delete('/api/products/:id', async (req, res) => {
     try {
-        const database = await connectDB();
-        await database.collection('products').deleteOne({ _id: new ObjectId(req.params.id) });
+        const db = await connectToDatabase();
+        await db.collection('products').deleteOne({ _id: new ObjectId(req.params.id) });
         res.json({ success: true });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
     }
 });
 
-module.exports = app;"" 
+// Health check
+app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok' });
+});
+
+// For local testing
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 3001;
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
+
+module.exports = app;
