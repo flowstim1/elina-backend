@@ -1,49 +1,60 @@
 const express = require('express');
-const mysql = require('mysql2');
+const { MongoClient, ObjectId } = require('mongodb');
 const cors = require('cors');
 
 const app = express();
-
 app.use(cors());
 app.use(express.json());
 
-// Aiven MySQL Connection
-const db = mysql.createConnection({
-    host: 'mysql-354224c0-stimflow01-31a1.c.aivencloud.com',
-    port: 14051,
-    user: 'avnadmin',
-    password: process.env.DB_PASSWORD,
-    database: 'defaultdb',
-    ssl: { rejectUnauthorized: false }
-});
+// MongoDB Connection
+const uri = process.env.MONGODB_URI;
+let db;
+
+async function connectDB() {
+    if (!db) {
+        const client = new MongoClient(uri);
+        await client.connect();
+        db = client.db('elina_jewelry');
+        console.log('✅ Connected to MongoDB Atlas');
+    }
+    return db;
+}
 
 // GET all products
-app.get('/api/products', (req, res) => {
-    db.query('SELECT * FROM products ORDER BY id DESC', (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(results);
-    });
+app.get('/api/products', async (req, res) => {
+    try {
+        const database = await connectDB();
+        const products = await database.collection('products').find({}).toArray();
+        res.json(products);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
-// POST - Add new product (simplified for Vercel)
-app.post('/api/products', (req, res) => {
-    const { name, price, material, category, description, image_url } = req.body;
-    
-    db.query('INSERT INTO products (name, price, material, category, description, image_url) VALUES (?, ?, ?, ?, ?, ?)',
-        [name, price, material, category, description, image_url],
-        (err, result) => {
-            if (err) return res.status(500).json({ error: err.message });
-            res.json({ success: true, id: result.insertId });
+// POST - Add new product
+app.post('/api/products', async (req, res) => {
+    try {
+        const { name, price, material, category, description, image_url } = req.body;
+        const database = await connectDB();
+        const result = await database.collection('products').insertOne({
+            name, price, material, category, description, image_url,
+            created_at: new Date()
         });
+        res.json({ success: true, id: result.insertedId });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
 // DELETE - Remove product
-app.delete('/api/products/:id', (req, res) => {
-    db.query('DELETE FROM products WHERE id = ?', [req.params.id], (err) => {
-        if (err) return res.status(500).json({ error: err.message });
+app.delete('/api/products/:id', async (req, res) => {
+    try {
+        const database = await connectDB();
+        await database.collection('products').deleteOne({ _id: new ObjectId(req.params.id) });
         res.json({ success: true });
-    });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
-// Export for Vercel
 module.exports = app;
