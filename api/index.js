@@ -6,7 +6,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// MongoDB Connection
 const uri = process.env.MONGODB_URI;
 let db;
 
@@ -15,12 +14,11 @@ async function connectDB() {
         const client = new MongoClient(uri);
         await client.connect();
         db = client.db('elina_jewelry');
-        console.log('✅ Connected to MongoDB Atlas');
+        console.log('✅ Connected to MongoDB');
     }
     return db;
 }
 
-// GET all products
 app.get('/api/products', async (req, res) => {
     try {
         const database = await connectDB();
@@ -31,7 +29,6 @@ app.get('/api/products', async (req, res) => {
     }
 });
 
-// POST - Add new product
 app.post('/api/products', async (req, res) => {
     try {
         const { name, price, material, category, description, image_url } = req.body;
@@ -46,7 +43,6 @@ app.post('/api/products', async (req, res) => {
     }
 });
 
-// DELETE - Remove product
 app.delete('/api/products/:id', async (req, res) => {
     try {
         const database = await connectDB();
