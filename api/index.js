@@ -3,11 +3,11 @@ const { MongoClient, ObjectId } = require('mongodb');
 const cors = require('cors');
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const streamifier = require('streamifier');
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 
 // Cloudinary configuration
 cloudinary.config({
@@ -16,14 +16,8 @@ cloudinary.config({
     api_secret: 'L3DmVbIt7KaJ-8ZRWWUS4fe1y9A'
 });
 
-// Configure multer to use Cloudinary
-const storage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params: {
-        folder: 'elina_jewelry',
-        allowed_formats: ['jpg', 'png', 'jpeg', 'webp']
-    }
-});
+// Use memory storage instead of CloudinaryStorage
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -58,8 +52,20 @@ app.post('/api/products', upload.single('image'), async (req, res) => {
         }
         
         let image_url = '';
+        
+        // Upload to Cloudinary if image exists
         if (req.file) {
-            image_url = req.file.path; // Cloudinary URL
+            const result = await new Promise((resolve, reject) => {
+                const uploadStream = cloudinary.uploader.upload_stream(
+                    { folder: 'elina_jewelry' },
+                    (error, result) => {
+                        if (error) reject(error);
+                        else resolve(result);
+                    }
+                );
+                streamifier.createReadStream(req.file.buffer).pipe(uploadStream);
+            });
+            image_url = result.secure_url;
         }
         
         const db = await connectToDatabase();
